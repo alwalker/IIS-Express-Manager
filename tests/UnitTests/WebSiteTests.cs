@@ -28,6 +28,44 @@ namespace UnitTests
             Assert.Equal("/", sites[0].ApplicationPath);
             Assert.Equal(string.Empty, sites[0].ApplicationPool);
             Assert.Equal("Clr4IntegratedAppPool", sites[1].ApplicationPool);
+            Assert.Equal("/", sites[0].VirtualPath);
+            Assert.Equal(@"C:\Users\alwalker\Desktop\MyFacebookSite3434\MyFacebookSite3434", sites[1].PhysicalPath);
+            Assert.Equal(WebSite.BindingProtocol.http, sites[0].Protocol);
+            Assert.Equal(":8080:localhost", sites[0].BindingInformation);
+        }
+
+        [Fact]
+        public void TestGetAllWebsites_NullFileIO()
+        {
+            Assert.Throws(typeof(ArgumentNullException), () => WebSite.GetAllWebsites(null));
+        }
+
+        [Fact]
+        public void TestGetAllWebsites_FileIOThrows()
+        {
+            _fileIOMock.Setup(x => x.GetSitesSection()).Throws(new Exception());
+
+            Assert.Throws(typeof(ApplicationException), () => WebSite.GetAllWebsites(_fileIOMock.Object));
+        }
+
+        [Fact]
+        public void TestGetAllWebsites_NullReturnFromFileIO()
+        {
+            _fileIOMock.Setup(x => x.GetSitesSection()).Returns(null as XDocument);
+
+            var sites = WebSite.GetAllWebsites(_fileIOMock.Object);
+
+            Assert.Null(sites);
+        }
+
+        [Fact]
+        public void TestGetAllWebsites_EmptyReturnFromFileIO()
+        {
+            _fileIOMock.Setup(x => x.GetSitesSection()).Returns(new XDocument());
+
+            var sites = WebSite.GetAllWebsites(_fileIOMock.Object);
+
+            Assert.Empty(sites);
         }
     }
 }
