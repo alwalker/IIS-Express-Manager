@@ -1,15 +1,87 @@
 ﻿<Window x:Class="IISExpressManager.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="600" Width="800"
+        Title="MainWindow" Height="600" Width="800" WindowStartupLocation="CenterScreen"
         Loaded="Window_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="216*" />
-            <ColumnDefinition Width="562*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <GroupBox Name="grpSites" Header="Sites" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <ListBox Name="lstSites" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></ListBox>
+        <GroupBox Name="grpSites" Header="Sites" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />                    
+                </Grid.RowDefinitions>
+                <ListBox Name="lstSites" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,5" Padding="0,0,5,0" SelectionChanged="lstSites_SelectionChanged" />
+                <Button Name="btnSave" Grid.Row="1" Grid.Column="0" Content="Save"/>
+                <Button Name="btnDelete" Grid.Row="1" Grid.Column="1" Content="Delete"/>                
+            </Grid>
+        </GroupBox>
+        <GroupBox Name="grpDetails" Header="Details" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="2,0,5,2">
+            <WrapPanel Name="wrpDetails" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <GroupBox Name="grpSite" Header="Site" Width="auto" Height="auto">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Label Name="lblDisplayId" Content="Id:" VerticalAlignment="Center" />
+                        <Label Name="lblId" Grid.Column="1" Content="{Binding Path=Id}" VerticalAlignment="Center" />
+                        <Label Name="lblName" Content="Name:" Grid.Row="1" VerticalAlignment="Center" />
+                        <TextBox Name="txtName" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Margin="0,0,5,0" Text="{Binding Path=Name}" />
+                        <CheckBox Name="chkServerAutoStart" Grid.Row="2" Grid.ColumnSpan="2" Content="Server Auto Start"  VerticalAlignment="Center" Margin="0,0,5,0" IsChecked="{Binding Path=ServerAutoStart}" />
+                    </Grid>
+                </GroupBox>
+                <GroupBox Name="grpApplication" Header="Application" Width="auto" Height="auto">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Name="lblApplicationPath" Content="Application Path:" VerticalAlignment="Center" Grid.Row="0" />
+                        <TextBox Name="txtApplicationPath" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="0,0,5,0" Text="{Binding Path=ApplicationPath}"/>
+                        <Label Name="lblApplicationPool" Content="Application Pool:" VerticalAlignment="Center" Grid.Row="1" />
+                        <TextBox Name="txtApplicationPool" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Margin="0,0,5,0" Text="{Binding Path=ApplicationPool}" />
+                        <Label Name="lblVirtualPath" Content="Virtual Path:" VerticalAlignment="Center" Grid.Row="2" />
+                        <TextBox Name="txtVirtualPath" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" Margin="0,0,5,0" Text="{Binding Path=VirtualPath}"/>
+                        <Label Name="lblPhysicalPath" Content="Physical Path:" VerticalAlignment="Center" Grid.Row="3" />
+                        <TextBox Name="txtPhysicalPath" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" Margin="0,0,5,0" Text="{Binding Path=PhysicalPath}"/>
+                    </Grid>
+                </GroupBox>
+                <GroupBox Name="grpBinding" Header="Binding" Width="Auto" Height="Auto">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Name="lblProtocol" Content="Protocol:" VerticalAlignment="Center" Grid.Row="0" />
+                        <ComboBox Name="cboProtocols" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0" SelectedItem="{Binding Path=Protocol}" />
+                        <Label Name="lblBindingInformation" Content="Binding Information:" VerticalAlignment="Center" Grid.Row="1" />
+                        <TextBox Name="txtBindingInformation" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Margin="0,0,5,0" Text="{Binding Path=BindingInformation}" />
+                    </Grid>
+                </GroupBox>
+            </WrapPanel>
         </GroupBox>
     </Grid>
 </Window>

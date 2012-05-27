@@ -33,12 +33,21 @@ namespace IISExpressManager
             {
                 _webSites = WebSite.GetAllWebsites(_fileIO);
                 lstSites.ItemsSource = _webSites;
+                cboProtocols.ItemsSource = Enum.GetValues(typeof(WebSite.BindingProtocol));
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
                 Application.Current.Shutdown();
             }
+        }
+
+        private void lstSites_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var currentSite = lstSites.SelectedItem as WebSite;
+            grpSite.DataContext = currentSite;
+            grpApplication.DataContext = currentSite;
+            grpBinding.DataContext = currentSite;
         }
     }
 }
