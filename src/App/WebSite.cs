@@ -37,6 +37,11 @@ namespace IISExpressManager
             BindingInformation = bindingInfo;
         }
 
+        public override string ToString()
+        {
+            return String.Format("{0}({1})", Name, Id);
+        }
+
         public static IList<WebSite> GetAllWebsites(IFileIO fileIO)
         {
             if (fileIO == null)
@@ -44,7 +49,7 @@ namespace IISExpressManager
                 throw new ArgumentNullException("fileIO");
             }
 
-            XDocument xdoc = null;
+            IEnumerable<XElement> xdoc = null;
             try
             {
                 xdoc = fileIO.GetSitesSection();

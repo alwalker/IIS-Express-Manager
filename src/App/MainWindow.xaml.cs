@@ -19,9 +19,26 @@ namespace IISExpressManager
     /// </summary>
     public partial class MainWindow : Window
     {
+        private FileIO _fileIO = new FileIO();
+        private IList<WebSite> _webSites;
+
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                _webSites = WebSite.GetAllWebsites(_fileIO);
+                lstSites.ItemsSource = _webSites;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                Application.Current.Shutdown();
+            }
         }
     }
 }

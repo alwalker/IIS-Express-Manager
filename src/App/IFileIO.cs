@@ -8,6 +8,6 @@ namespace IISExpressManager
 {
     public interface IFileIO
     {
-        XDocument GetSitesSection();
+        IEnumerable<XElement> GetSitesSection(string path = "");
     }
 }

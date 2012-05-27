@@ -1,0 +1,104 @@
+<sites>
+  <site name="WebSite1" id="1" serverAutoStart="true">
+    <application path="/">
+      <virtualDirectory path="/" physicalPath="%IIS_SITES_HOME%\WebSite1" />
+    </application>
+    <bindings>
+      <binding protocol="http" bindingInformation=":8080:localhost" />
+    </bindings>
+  </site>
+  <site name="FB_Auth_POC" id="2">
+    <application path="/" applicationPool="Clr4IntegratedAppPool">
+      <virtualDirectory path="/" physicalPath="C:\Users\alwalker\Desktop\MyFacebookSite3434\MyFacebookSite3434" />
+    </application>
+    <bindings>
+      <binding protocol="http" bindingInformation="*:3434:localhost" />
+    </bindings>
+  </site>
+  <site name="FB_Auth_POC(1)" id="3">
+    <application path="/" applicationPool="Clr4IntegratedAppPool">
+      <virtualDirectory path="/" physicalPath="C:\Users\alwalker\Dropbox\Code\POCs\FB_Auth_POC\FB_Auth_POC" />
+    </application>
+    <bindings>
+      <binding protocol="http" bindingInformation="*:2282:localhost" />
+    </bindings>
+  </site>
+  <site name="MvcApplication1" id="4">
+    <application path="/" applicationPool="Clr4IntegratedAppPool">
+      <virtualDirectory path="/" physicalPath="C:\Users\alwalker\Dropbox\Code\MvcApplication1\MvcApplication1" />
+    </application>
+    <bindings>
+      <binding protocol="http" bindingInformation="*:3769:localhost" />
+    </bindings>
+  </site>
+  <site name="HTML_Goofyness" id="5">
+    <application path="/" applicationPool="Clr4IntegratedAppPool">
+      <virtualDirectory path="/" physicalPath="C:\Users\alwalker\Dropbox\Code\HTML goofyness" />
+    </application>
+    <bindings>
+      <binding protocol="http" bindingInformation="*:8080:localhost" />
+    </bindings>
+  </site>
+  <site name="ODataService" id="6">
+    <application path="/" applicationPool="Clr4IntegratedAppPool">
+      <virtualDirectory path="/" physicalPath="C:\Users\alwalker\Dropbox\Code\POCs\SL_FSharp_POC\ODataService" />
+    </application>
+    <bindings>
+      <binding protocol="http" bindingInformation="*:2507:localhost" />
+    </bindings>
+  </site>
+  <site name="ODataFeeds" id="7">
+    <application path="/" applicationPool="Clr4IntegratedAppPool">
+      <virtualDirectory path="/" physicalPath="C:\Users\alwalker\Dropbox\Code\POCs\SL_FSharp_POC\ODataFeeds" />
+    </application>
+    <bindings>
+      <binding protocol="http" bindingInformation="*:2844:localhost" />
+    </bindings>
+  </site>
+  <site name="SL_FS_POC.Odata" id="8">
+    <application path="/" applicationPool="Clr4IntegratedAppPool">
+      <virtualDirectory path="/" physicalPath="C:\Users\alwalker\Dropbox\Code\POCs\SL_FS_POC\SL_FS_POC.Odata" />
+    </application>
+    <bindings>
+      <binding protocol="http" bindingInformation="*:3347:localhost" />
+    </bindings>
+  </site>
+  <site name="SL_Async_POC.Odata" id="9">
+    <application path="/" applicationPool="Clr4IntegratedAppPool">
+      <virtualDirectory path="/" physicalPath="C:\Users\alwalker\Dropbox\Code\POCs\SL_Async_POC\SL_Async_POC.Odata" />
+    </application>
+    <bindings>
+      <binding protocol="http" bindingInformation="*:1937:localhost" />
+    </bindings>
+  </site>
+  <site name="SilverlightOdataFSharpPOC.Odata" id="10">
+    <application path="/" applicationPool="Clr4IntegratedAppPool">
+      <virtualDirectory path="/" physicalPath="C:\Users\alwalker\Dropbox\Code\POCs\SilverlightOdataFSharpPOC\SilverlightOdataFSharpPOC.Odata" />
+    </application>
+    <bindings>
+      <binding protocol="http" bindingInformation="*:2530:localhost" />
+    </bindings>
+  </site>
+  <site name="HSBP.DataService" id="11">
+    <application path="/" applicationPool="Clr4IntegratedAppPool">
+      <virtualDirectory path="/" physicalPath="C:\Users\alwalker\Dropbox\Code\Projects\hsbp-kata\WPF\src\HSBP.DataService" />
+    </application>
+    <bindings>
+      <binding protocol="http" bindingInformation="*:2349:localhost" />
+    </bindings>
+  </site>
+  <site name="HSBP.DomainService" id="12">
+    <application path="/" applicationPool="Clr4IntegratedAppPool">
+      <virtualDirectory path="/" physicalPath="C:\Users\alwalker\Dropbox\Code\Projects\hsbp-kata\WPF\src\HSBP.DomainService" />
+    </application>
+    <bindings>
+      <binding protocol="http" bindingInformation="*:2737:localhost" />
+    </bindings>
+  </site>
+  <siteDefaults>
+    <logFile logFormat="W3C" directory="%IIS_USER_HOME%\Logs" />
+    <traceFailedRequestsLogging directory="%IIS_USER_HOME%\TraceLogFiles" enabled="true" maxLogFileSizeKB="1024" />
+  </siteDefaults>
+  <applicationDefaults applicationPool="Clr4IntegratedAppPool" />
+  <virtualDirectoryDefaults allowSubDirConfig="true" />
+</sites>

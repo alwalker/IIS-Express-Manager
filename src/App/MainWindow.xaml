@@ -1,8 +1,15 @@
 ﻿<Window x:Class="IISExpressManager.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="600" Width="800"
+        Loaded="Window_Loaded">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="216*" />
+            <ColumnDefinition Width="562*" />
+        </Grid.ColumnDefinitions>
+        <GroupBox Name="grpSites" Header="Sites" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <ListBox Name="lstSites" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></ListBox>
+        </GroupBox>
     </Grid>
 </Window>

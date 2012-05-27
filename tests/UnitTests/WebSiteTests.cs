@@ -12,12 +12,12 @@ namespace UnitTests
     public class WebSiteTests
     {
         private Mock<IFileIO> _fileIOMock = new Mock<IFileIO>();
-        private XDocument _validSites = XDocument.Load("Valid_Sites_Section.xml");
+        private IEnumerable<XElement> _validSites = XDocument.Load("Valid_Sites_Section.xml").Elements();
 
         [Fact]
         public void TestGetAllWebSite()
         {
-            _fileIOMock.Setup(x => x.GetSitesSection()).Returns(_validSites);
+            _fileIOMock.Setup(x => x.GetSitesSection("")).Returns(_validSites);
 
             var sites = WebSite.GetAllWebsites(_fileIOMock.Object);
 
@@ -43,7 +43,7 @@ namespace UnitTests
         [Fact]
         public void TestGetAllWebsites_FileIOThrows()
         {
-            _fileIOMock.Setup(x => x.GetSitesSection()).Throws(new Exception());
+            _fileIOMock.Setup(x => x.GetSitesSection("")).Throws(new Exception());
 
             Assert.Throws(typeof(ApplicationException), () => WebSite.GetAllWebsites(_fileIOMock.Object));
         }
@@ -51,7 +51,7 @@ namespace UnitTests
         [Fact]
         public void TestGetAllWebsites_NullReturnFromFileIO()
         {
-            _fileIOMock.Setup(x => x.GetSitesSection()).Returns(null as XDocument);
+            _fileIOMock.Setup(x => x.GetSitesSection("")).Returns(null as IEnumerable<XElement>);
 
             var sites = WebSite.GetAllWebsites(_fileIOMock.Object);
 
@@ -61,7 +61,7 @@ namespace UnitTests
         [Fact]
         public void TestGetAllWebsites_EmptyReturnFromFileIO()
         {
-            _fileIOMock.Setup(x => x.GetSitesSection()).Returns(new XDocument());
+            _fileIOMock.Setup(x => x.GetSitesSection("")).Returns(new List<XElement>());
 
             var sites = WebSite.GetAllWebsites(_fileIOMock.Object);
 

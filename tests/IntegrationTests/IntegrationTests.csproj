@@ -45,9 +45,24 @@
   <ItemGroup>
     <Compile Include="FileIOTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WebSiteTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="applicationhost.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\App\IISExpressManager.csproj">
+      <Project>{6B42966E-1233-4EA3-A506-C740147427E6}</Project>
+      <Name>IISExpressManager</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="LongValidSites.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
