@@ -46,8 +46,15 @@ namespace IISExpressManager
         {
             var currentSite = lstSites.SelectedItem as WebSite;
             grpSite.DataContext = currentSite;
+            btnSave.DataContext = currentSite;
             grpApplication.DataContext = currentSite;
             grpBinding.DataContext = currentSite;
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            var currentSite = lstSites.SelectedItem as WebSite;
+            currentSite.IsDirty = false;
         }
     }
 }

@@ -4,29 +4,181 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Xml.Linq;
+using System.ComponentModel;
 
 namespace IISExpressManager
 {
-    public class WebSite
+    public class WebSite : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged(string name)
+        {
+            if (name != "IsDirty")
+            {
+                IsDirty = true;
+            }
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(name));
+            }
+        }
+
+
         public enum BindingProtocol { Unknown = 0, http, ftp };
 
-        private int _id;
+        private readonly int _id;
+        private bool _isDirty;
+        private string _bindingInformation;
+        private BindingProtocol _protocol;
+        private string _physicalPath;
+        private string _virtualPath;
+        private string _applicationPath;
+        private string _applicationPool;
+        private bool _serverAutoStart;
+        private string _name;        
 
         public int Id { get { return _id; } }
-        public string Name { get; set; }
-        public bool ServerAutoStart { get; set; }
-        public string ApplicationPool { get; set; } //TODO:Research app pools
-        public string ApplicationPath { get; set; }
-        public string VirtualPath { get; set; }
-        public string PhysicalPath { get; set; }  //TODO:Check if exists
-        public BindingProtocol Protocol { get; set; }
-        public string BindingInformation { get; set; }
+        public bool IsDirty
+        {
+            get
+            {
+                return _isDirty;
+            }
+            set
+            {
+                if (value != _isDirty)
+                {
+                    _isDirty = value;
+                    OnPropertyChanged("IsDirty");
+                }
+            }
+        }
+        public string Name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                if (value != _name)
+                {
+                    _name = value;
+                    OnPropertyChanged("Name");
+                }
+            }
+        }
+        public bool ServerAutoStart
+        {
+            get
+            {
+                return _serverAutoStart;
+            }
+            set
+            {
+                if (value != _serverAutoStart)
+                {
+                    _serverAutoStart = value;
+                    OnPropertyChanged("ServerAutoStart");
+                }
+            }
+        }
+        public string ApplicationPool  //TODO:Research app pools
+        {
+            get
+            {
+                return _applicationPool;
+            }
+            set
+            {
+                if (value != _applicationPool)
+                {
+                    _applicationPool = value;
+                    OnPropertyChanged("ApplicationPool");
+                }
+            }
+        }
+        public string ApplicationPath
+        {
+            get
+            {
+                return _applicationPath;
+            }
+            set
+            {
+                if (value != _applicationPath)
+                {
+                    _applicationPath = value;
+                    OnPropertyChanged("ApplicationPath");
+                }
+            }
+        }
+        public string VirtualPath
+        {
+            get
+            {
+                return _virtualPath;
+            }
+            set
+            {
+                if (value != _virtualPath)
+                {
+                    _virtualPath = value;
+                    OnPropertyChanged("VirtualPath");
+                }
+            }
+        }
+        public string PhysicalPath //TODO:Check if exists
+        {
+            get
+            {
+                return _physicalPath;
+            }
+            set
+            {
+                if (value != _physicalPath)
+                {
+                    _physicalPath = value;
+                    OnPropertyChanged("PhysicalPath");
+                }
+            }
+        }
+        public BindingProtocol Protocol
+        {
+            get
+            {
+                return _protocol;
+            }
+            set
+            {
+                if (value != _protocol)
+                {
+                    _protocol = value;
+                    OnPropertyChanged("Protocol");
+                }
+            }
+        }
+        public string BindingInformation
+        {
+            get
+            {
+                return _bindingInformation;
+            }
+            set
+            {
+                if (value != _bindingInformation)
+                {
+                    _bindingInformation = value;
+                    OnPropertyChanged("BindingInformation");
+                }
+            }
+        }
 
         protected WebSite(int id, string name, bool serverAutoStart, string applicationPath, string applicationPool,
             string virtualPath, string physicalPath, BindingProtocol protocol, string bindingInfo)
         {
-            _id = id;
+            _id = id;            
             Name = name;
             ServerAutoStart = serverAutoStart;
             ApplicationPath = applicationPath;
@@ -35,6 +187,7 @@ namespace IISExpressManager
             PhysicalPath = physicalPath;
             Protocol = protocol;
             BindingInformation = bindingInfo;
+            IsDirty = false;
         }
 
         public override string ToString()
