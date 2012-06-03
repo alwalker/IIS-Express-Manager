@@ -18,7 +18,7 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <ListBox Name="lstSites" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,5" Padding="0,0,5,0" SelectionChanged="lstSites_SelectionChanged" />
+                <ListBox Name="lstSites" Grid.Row="0" Grid.ColumnSpan="2" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,5" Padding="0,0,5,0" SelectionChanged="lstSites_SelectionChanged" />
                 <Button Name="btnSave" Grid.Row="1" Grid.Column="0" Content="Save" IsEnabled="{Binding Path=IsDirty, FallbackValue=false, TargetNullValue=false}" Click="btnSave_Click"/>
                 <Button Name="btnDelete" Grid.Row="1" Grid.Column="1" Content="Delete">
                     <Button.Style>

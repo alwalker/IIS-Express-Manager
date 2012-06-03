@@ -27,5 +27,21 @@ namespace IntegrationTests
                 }
             }
         }
+
+        [Fact]
+        public void TestExists_DoesExist()
+        {
+            var fileIO = new FileIO();
+
+            Assert.True(fileIO.Exists("LongValidSites.xml"));
+        }
+
+        [Fact]
+        public void TestExists_DoesNotExist()
+        {
+            var fileIO = new FileIO();
+
+            Assert.False(fileIO.Exists("LawdawdawongValidSites.xml"));
+        }
     }
 }

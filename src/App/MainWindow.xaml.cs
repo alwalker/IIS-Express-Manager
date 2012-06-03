@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -20,11 +22,30 @@ namespace IISExpressManager
     public partial class MainWindow : Window
     {
         private FileIO _fileIO = new FileIO();
-        private IList<WebSite> _webSites;
+        private ObservableCollection<WebSite> _webSites;
 
         public MainWindow()
         {
             InitializeComponent();
+
+            _fileIO.FileChanged += FileChanged;
+        }
+
+        private void FileChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                _webSites = WebSite.GetAllWebsites(_fileIO);
+                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        lstSites.ItemsSource = null;
+                        lstSites.ItemsSource = _webSites;
+                    }));
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("File changed by another program but failed to reload: " + ex.Message);
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

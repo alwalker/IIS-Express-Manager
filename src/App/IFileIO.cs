@@ -8,6 +8,9 @@ namespace IISExpressManager
 {
     public interface IFileIO
     {
+        event EventHandler FileChanged;
+
         IEnumerable<XElement> GetSitesSection(string path = "");
+        bool Exists(string path);
     }
 }

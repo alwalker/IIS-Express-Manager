@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using System.Xml.Linq;
 using System.ComponentModel;
+using System.Collections.ObjectModel;
 
 namespace IISExpressManager
 {
@@ -195,7 +196,7 @@ namespace IISExpressManager
             return String.Format("{0}({1})", Name, Id);
         }
 
-        public static IList<WebSite> GetAllWebsites(IFileIO fileIO)
+        public static ObservableCollection<WebSite> GetAllWebsites(IFileIO fileIO)
         {
             if (fileIO == null)
             {
@@ -219,7 +220,7 @@ namespace IISExpressManager
 
             try
             {
-                var sites =
+                return new ObservableCollection<WebSite>(
                     from site in xdoc.Descendants("site")
                     select new WebSite(
                         Convert.ToInt32(site.Attribute("id").Value),
@@ -230,8 +231,7 @@ namespace IISExpressManager
                         site.Element("application").Element("virtualDirectory").Attribute("path").Value,
                         site.Element("application").Element("virtualDirectory").Attribute("physicalPath").Value,
                         (BindingProtocol)Enum.Parse(typeof(BindingProtocol), site.Element("bindings").Element("binding").Attribute("protocol").Value),
-                        site.Element("bindings").Element("binding").Attribute("bindingInformation").Value);
-                return sites.ToList();
+                        site.Element("bindings").Element("binding").Attribute("bindingInformation").Value));               
             }
             catch (Exception ex)
             {
