@@ -13,10 +13,10 @@ namespace IntegrationTests
         [Fact]
         public void TestGetSitesSection()
         {
-            var expected = XDocument.Load("LongValidSites.xml").Descendants("sites");           
-            var fileIO = new FileIO();
+            var expected = XDocument.Load("LongValidSites.xml").Descendants("sites");
+            var fileIO = new FileIO("applicationhost.config");
 
-            var actual = fileIO.GetSitesSection("applicationhost.config");
+            var actual = fileIO.GetSitesSection();
 
             Assert.Equal(expected.Count(), actual.Count());
             foreach (var x in actual)
@@ -31,7 +31,7 @@ namespace IntegrationTests
         [Fact]
         public void TestExists_DoesExist()
         {
-            var fileIO = new FileIO();
+            var fileIO = new FileIO(string.Empty);
 
             Assert.True(fileIO.Exists("C:\\"));
         }
@@ -39,7 +39,7 @@ namespace IntegrationTests
         [Fact]
         public void TestExists_DoesNotExist()
         {
-            var fileIO = new FileIO();
+            var fileIO = new FileIO(string.Empty);
 
             Assert.False(fileIO.Exists("C:\\this_dir_no_exist"));
         }

@@ -9,12 +9,15 @@ namespace IISExpressManager
 {
     public class FileIO : IFileIO
     {
-        private FileSystemWatcher _watcher = new FileSystemWatcher();
+        private readonly FileSystemWatcher _watcher = new FileSystemWatcher();
+        private readonly string _pathToConfig;
 
         public event EventHandler FileChanged;
 
-        public FileIO()
+        public FileIO(string pathToConfig)
         {
+            _pathToConfig = pathToConfig;
+
             _watcher.Path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"IISExpress\config");
             _watcher.Changed += Watcher_FileChanged;
             _watcher.Filter = "applicationhost.config";
@@ -29,27 +32,12 @@ namespace IISExpressManager
             }
         }
 
-        public IEnumerable<XElement> GetSitesSection(string path = "") //TODO: Find a better way to do this
+        public IEnumerable<XElement> GetSitesSection()
         {
             XDocument config = null;
-
-            if (string.IsNullOrEmpty(path))
+            using (var stream = new FileStream(_pathToConfig, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
-                var myDocumentsLocation = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                using (var stream = new FileStream(Path.Combine(myDocumentsLocation, @"IISExpress\config\applicationhost.config"),
-                    FileMode.Open,
-                    FileAccess.Read,
-                    FileShare.ReadWrite))
-                {
-                    config = XDocument.Load(stream);
-                }
-            }
-            else
-            {
-                using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                {
-                    config = XDocument.Load(stream);
-                }
+                config = XDocument.Load(stream);
             }
 
             return config.Descendants("sites");

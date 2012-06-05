@@ -17,7 +17,8 @@ namespace UnitTests
         [Fact]
         public void TestGetAllWebSite()
         {
-            _fileIOMock.Setup(x => x.GetSitesSection("")).Returns(_validSites);
+            _fileIOMock.Setup(x => x.GetSitesSection()).Returns(_validSites);
+            _fileIOMock.Setup(x => x.Exists(It.IsAny<string>())).Returns(true);
 
             var sites = WebSite.GetAllWebsites(_fileIOMock.Object);
 
@@ -32,6 +33,7 @@ namespace UnitTests
             Assert.Equal(@"C:\Users\alwalker\Desktop\MyFacebookSite3434\MyFacebookSite3434", sites[1].PhysicalPath);
             Assert.Equal(WebSite.BindingProtocol.http, sites[0].Protocol);
             Assert.Equal(":8080:localhost", sites[0].BindingInformation);
+            Assert.True(sites[0].PhysicalDirectoryIsValid);
         }
 
         [Fact]
@@ -43,7 +45,7 @@ namespace UnitTests
         [Fact]
         public void TestGetAllWebsites_FileIOThrows()
         {
-            _fileIOMock.Setup(x => x.GetSitesSection("")).Throws(new Exception());
+            _fileIOMock.Setup(x => x.GetSitesSection()).Throws(new Exception());
 
             Assert.Throws(typeof(ApplicationException), () => WebSite.GetAllWebsites(_fileIOMock.Object));
         }
@@ -51,7 +53,7 @@ namespace UnitTests
         [Fact]
         public void TestGetAllWebsites_NullReturnFromFileIO()
         {
-            _fileIOMock.Setup(x => x.GetSitesSection("")).Returns(null as IEnumerable<XElement>);
+            _fileIOMock.Setup(x => x.GetSitesSection()).Returns(null as IEnumerable<XElement>);
 
             var sites = WebSite.GetAllWebsites(_fileIOMock.Object);
 
@@ -61,7 +63,7 @@ namespace UnitTests
         [Fact]
         public void TestGetAllWebsites_EmptyReturnFromFileIO()
         {
-            _fileIOMock.Setup(x => x.GetSitesSection("")).Returns(new List<XElement>());
+            _fileIOMock.Setup(x => x.GetSitesSection()).Returns(new List<XElement>());
 
             var sites = WebSite.GetAllWebsites(_fileIOMock.Object);
 

@@ -14,7 +14,7 @@ namespace IntegrationTests
         public void TestGetAllWebSite()
         {
 
-            var sites = WebSite.GetAllWebsites(new FileIO());
+            var sites = WebSite.GetAllWebsites(new FileIO("applicationhost.config"));
 
             Assert.Equal("WebSite1", sites[0].Name);
             Assert.Equal(1, sites[0].Id);

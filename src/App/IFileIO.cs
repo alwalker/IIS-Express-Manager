@@ -10,7 +10,7 @@ namespace IISExpressManager
     {
         event EventHandler FileChanged;
 
-        IEnumerable<XElement> GetSitesSection(string path = "");
+        IEnumerable<XElement> GetSitesSection();
         bool Exists(string path);
     }
 }

@@ -12,7 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.IO;
 
 namespace IISExpressManager
 {
@@ -21,13 +21,16 @@ namespace IISExpressManager
     /// </summary>
     public partial class MainWindow : Window
     {
-        private FileIO _fileIO = new FileIO();
+        private FileIO _fileIO;
         private ObservableCollection<WebSite> _webSites;
 
         public MainWindow()
         {
             InitializeComponent();
 
+            _fileIO = new FileIO(Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                @"IISExpress\config\applicationhost.config"));
             _fileIO.FileChanged += FileChanged;
         }
 
