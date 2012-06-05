@@ -32,30 +32,24 @@ namespace IISExpressManager
         public IEnumerable<XElement> GetSitesSection(string path = "") //TODO: Find a better way to do this
         {
             XDocument config = null;
-            try
+
+            if (string.IsNullOrEmpty(path))
             {
-                if (string.IsNullOrEmpty(path))
+                var myDocumentsLocation = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                using (var stream = new FileStream(Path.Combine(myDocumentsLocation, @"IISExpress\config\applicationhost.config"),
+                    FileMode.Open,
+                    FileAccess.Read,
+                    FileShare.ReadWrite))
                 {
-                    var myDocumentsLocation = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                    using (var stream = new FileStream(Path.Combine(myDocumentsLocation, @"IISExpress\config\applicationhost.config"),
-                        FileMode.Open,
-                        FileAccess.Read,
-                        FileShare.ReadWrite))
-                    {
-                        config = XDocument.Load(stream);
-                    }
-                }
-                else
-                {
-                    using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                    {
-                        config = XDocument.Load(stream);
-                    }
+                    config = XDocument.Load(stream);
                 }
             }
-            catch (FileLoadException ex)
+            else
             {
-                var x = 1;
+                using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                {
+                    config = XDocument.Load(stream);
+                }
             }
 
             return config.Descendants("sites");
@@ -65,7 +59,7 @@ namespace IISExpressManager
         {
             try
             {
-                return File.Exists(path);
+                return Directory.Exists(path);
             }
             catch
             {

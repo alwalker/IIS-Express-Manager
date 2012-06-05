@@ -25,11 +25,11 @@ namespace IISExpressManager
             }
         }
 
-
         public enum BindingProtocol { Unknown = 0, http, ftp };
 
         private readonly int _id;
         private bool _isDirty;
+        private bool _physicalDirectoryIsValid;
         private string _bindingInformation;
         private BindingProtocol _protocol;
         private string _physicalPath;
@@ -37,7 +37,7 @@ namespace IISExpressManager
         private string _applicationPath;
         private string _applicationPool;
         private bool _serverAutoStart;
-        private string _name;        
+        private string _name;
 
         public int Id { get { return _id; } }
         public bool IsDirty
@@ -52,6 +52,21 @@ namespace IISExpressManager
                 {
                     _isDirty = value;
                     OnPropertyChanged("IsDirty");
+                }
+            }
+        }
+        public bool PhysicalDirectoryIsValid
+        {
+            get
+            {
+                return _physicalDirectoryIsValid;
+            }
+            set
+            {
+                if (value != _physicalDirectoryIsValid)
+                {
+                    _physicalDirectoryIsValid = value;
+                    OnPropertyChanged("PhysicalDirectoryIsValid");
                 }
             }
         }
@@ -70,6 +85,7 @@ namespace IISExpressManager
                 }
             }
         }
+        public string DisplayName { get { return "(" + _id + ") " + _name; } }
         public bool ServerAutoStart
         {
             get
@@ -177,9 +193,10 @@ namespace IISExpressManager
         }
 
         protected WebSite(int id, string name, bool serverAutoStart, string applicationPath, string applicationPool,
-            string virtualPath, string physicalPath, BindingProtocol protocol, string bindingInfo)
+            string virtualPath, string physicalPath, BindingProtocol protocol, string bindingInfo,
+            bool physicalDirectoryIsValid)
         {
-            _id = id;            
+            _id = id;
             Name = name;
             ServerAutoStart = serverAutoStart;
             ApplicationPath = applicationPath;
@@ -188,6 +205,7 @@ namespace IISExpressManager
             PhysicalPath = physicalPath;
             Protocol = protocol;
             BindingInformation = bindingInfo;
+            PhysicalDirectoryIsValid = physicalDirectoryIsValid;
             IsDirty = false;
         }
 
@@ -231,7 +249,8 @@ namespace IISExpressManager
                         site.Element("application").Element("virtualDirectory").Attribute("path").Value,
                         site.Element("application").Element("virtualDirectory").Attribute("physicalPath").Value,
                         (BindingProtocol)Enum.Parse(typeof(BindingProtocol), site.Element("bindings").Element("binding").Attribute("protocol").Value),
-                        site.Element("bindings").Element("binding").Attribute("bindingInformation").Value));               
+                        site.Element("bindings").Element("binding").Attribute("bindingInformation").Value,
+                        fileIO.Exists(site.Element("application").Element("virtualDirectory").Attribute("physicalPath").Value)));
             }
             catch (Exception ex)
             {

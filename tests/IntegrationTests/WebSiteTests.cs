@@ -26,6 +26,8 @@ namespace IntegrationTests
             Assert.Equal(@"C:\Users\alwalker\Desktop\MyFacebookSite3434\MyFacebookSite3434", sites[1].PhysicalPath);
             Assert.Equal(WebSite.BindingProtocol.http, sites[0].Protocol);
             Assert.Equal(":8080:localhost", sites[0].BindingInformation);
+            Assert.False(sites[1].PhysicalDirectoryIsValid);
+            Assert.True(sites[0].PhysicalDirectoryIsValid);
         }
     }
 }

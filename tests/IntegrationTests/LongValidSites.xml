@@ -1,7 +1,7 @@
 <sites>
   <site name="WebSite1" id="1" serverAutoStart="true">
     <application path="/">
-      <virtualDirectory path="/" physicalPath="%IIS_SITES_HOME%\WebSite1" />
+      <virtualDirectory path="/" physicalPath="c:\" />
     </application>
     <bindings>
       <binding protocol="http" bindingInformation=":8080:localhost" />

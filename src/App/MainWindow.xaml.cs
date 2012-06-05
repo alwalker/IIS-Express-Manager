@@ -42,9 +42,9 @@ namespace IISExpressManager
                         lstSites.ItemsSource = _webSites;
                     }));
             }
-            catch(Exception ex)
+            catch
             {
-                MessageBox.Show("File changed by another program but failed to reload: " + ex.Message);
+                MessageBox.Show("File changed by another program but failed to reload.");
             }
         }
 

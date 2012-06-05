@@ -1,8 +1,13 @@
 ﻿<Window x:Class="IISExpressManager.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:l="clr-namespace:App"
         Title="MainWindow" Height="600" Width="800" WindowStartupLocation="CenterScreen"
         Loaded="Window_Loaded">
+    <Window.Resources>
+        <l:ValidDirToBackgroundConverter x:Key="converter" />
+    </Window.Resources>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -18,7 +23,13 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <ListBox Name="lstSites" Grid.Row="0" Grid.ColumnSpan="2" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,5" Padding="0,0,5,0" SelectionChanged="lstSites_SelectionChanged" />
+                <ListBox Name="lstSites" Grid.Row="0" Grid.ColumnSpan="2" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,5" Padding="0,0,5,0" SelectionChanged="lstSites_SelectionChanged">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Label Name="lblItem" Content="{Binding Path=DisplayName}" Background="{Binding PhysicalDirectoryIsValid, Converter={StaticResource converter}}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
                 <Button Name="btnSave" Grid.Row="1" Grid.Column="0" Content="Save" IsEnabled="{Binding Path=IsDirty, FallbackValue=false, TargetNullValue=false}" Click="btnSave_Click"/>
                 <Button Name="btnDelete" Grid.Row="1" Grid.Column="1" Content="Delete">
                     <Button.Style>
@@ -72,7 +83,7 @@
                         <Label Name="lblVirtualPath" Content="Virtual Path:" VerticalAlignment="Center" Grid.Row="2" />
                         <TextBox Name="txtVirtualPath" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" Margin="0,0,5,0" Text="{Binding Path=VirtualPath, Mode=TwoWay}"/>
                         <Label Name="lblPhysicalPath" Content="Physical Path:" VerticalAlignment="Center" Grid.Row="3" />
-                        <TextBox Name="txtPhysicalPath" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" Margin="0,0,5,0" Text="{Binding Path=PhysicalPath, Mode=TwoWay}"/>
+                        <TextBox Name="txtPhysicalPath" Grid.Column="1" Grid.Row="3" BorderBrush="{Binding PhysicalDirectoryIsValid, Converter={StaticResource converter}}" VerticalAlignment="Center" Margin="0,0,5,0" Text="{Binding Path=PhysicalPath, Mode=TwoWay}"/>
                     </Grid>
                 </GroupBox>
                 <GroupBox Name="grpBinding" Header="Binding" Width="Auto" Height="Auto">

@@ -33,7 +33,7 @@ namespace IntegrationTests
         {
             var fileIO = new FileIO();
 
-            Assert.True(fileIO.Exists("LongValidSites.xml"));
+            Assert.True(fileIO.Exists("C:\\"));
         }
 
         [Fact]
@@ -41,7 +41,7 @@ namespace IntegrationTests
         {
             var fileIO = new FileIO();
 
-            Assert.False(fileIO.Exists("LawdawdawongValidSites.xml"));
+            Assert.False(fileIO.Exists("C:\\this_dir_no_exist"));
         }
     }
 }
