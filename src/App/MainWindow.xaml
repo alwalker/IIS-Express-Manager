@@ -31,7 +31,7 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
                 <Button Name="btnSave" Grid.Row="1" Grid.Column="0" Content="Save" IsEnabled="{Binding Path=IsDirty, FallbackValue=false, TargetNullValue=false}" Click="btnSave_Click"/>
-                <Button Name="btnDelete" Grid.Row="1" Grid.Column="1" Content="Delete">
+                <Button Name="btnDelete" Grid.Row="1" Grid.Column="1" Content="Delete" Click="btnDelete_Click">
                     <Button.Style>
                         <Style>
                             <Style.Triggers>

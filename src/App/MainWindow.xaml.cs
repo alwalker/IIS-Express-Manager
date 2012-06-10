@@ -88,5 +88,22 @@ namespace IISExpressManager
                 MessageBox.Show(String.Format("Error saving site: {0}", ex), "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            var currentSite = lstSites.SelectedItem as WebSite;
+
+            try
+            {
+                currentSite.Delete(_fileIO);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(String.Format("Error deleting site: {0}", ex), "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            _webSites.Remove(currentSite);
+        }
     }
 }

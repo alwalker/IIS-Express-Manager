@@ -5,11 +5,18 @@ using System.Text;
 using Xunit;
 using System.Xml.Linq;
 using IISExpressManager;
+using System.IO;
 
 namespace IntegrationTests
 {
     public class FileIOTests
     {
+        public FileIOTests()
+        {
+            File.Copy("applicationhost.config", "applicationhost_saved.config", true);
+            File.Copy("applicationhost.config", "applicationhost_deleted.config", true);
+        }
+
         [Fact]
         public void TestGetSitesSection()
         {
@@ -57,6 +64,19 @@ namespace IntegrationTests
                  where s.Attribute("id").Value == "1"
                  select s).SingleOrDefault();
             Assert.Equal("false", savedSite.Attribute("serverAutoStart").Value);
+        }
+
+        [Fact]
+        public void TestDelete()
+        {
+            var fileIO = new FileIO("applicationhost_deleted.config");
+            var siteToDelete = XDocument.Load("New_Site.xml").Element("site");
+            var expected = WebSite.GetAllWebsites(fileIO).Count - 1;
+
+            fileIO.Delete(siteToDelete, 1);
+            var actual = WebSite.GetAllWebsites(fileIO).Count;
+
+            Assert.Equal(expected, actual);
         }
     }
 }

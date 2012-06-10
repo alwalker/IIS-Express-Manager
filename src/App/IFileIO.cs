@@ -13,5 +13,6 @@ namespace IISExpressManager
         IEnumerable<XElement> GetSitesSection();
         bool Exists(string path);
         void Save(XElement site, int id);
+        void Delete(XElement site, int id);
     }
 }

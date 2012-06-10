@@ -86,6 +86,21 @@ namespace UnitTests
             _fileIOMock.VerifyAll();
         }
 
+        [Fact]
+        public void TestDelete()
+        {
+            var newSite = XDocument.Load("Site.xml").Element("site");
+            _fileIOMock.Setup(x => x.GetSitesSection()).Returns(_validSites);
+            _fileIOMock.Setup(x => x.Exists(It.IsAny<string>())).Returns(true);
+            _fileIOMock.Setup(x => x.Delete(It.Is<XElement>(y => CompareElements(y, newSite)), It.IsAny<int>())).Verifiable();
+            var sites = WebSite.GetAllWebsites(_fileIOMock.Object);
+            var site = sites.First();
+
+            site.Delete(_fileIOMock.Object);
+
+            _fileIOMock.VerifyAll();
+        }
+
         private bool CompareElements(XElement left, XElement right)
         {
             var lnodes = left.Nodes().ToList();

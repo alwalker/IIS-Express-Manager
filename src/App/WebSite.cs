@@ -258,24 +258,43 @@ namespace IISExpressManager
             }
         }
 
-        public void Save(IFileIO _fileIO)
+        public void Save(IFileIO fileIO)
         {
-            var site = new XElement("site", new XAttribute("name", _name), new XAttribute("id", _id), new XAttribute("serverAutoStart", _serverAutoStart),
-                new XElement("application", new XAttribute("path", _applicationPath),
-                    new XElement("virtualDirectory", new XAttribute("path", _virtualPath), new XAttribute("physicalPath", _physicalPath))),
-                new XElement("bindings",
-                    new XElement("binding", new XAttribute("protocol", _protocol), new XAttribute("bindingInformation", _bindingInformation))
-                    ));
+            var site = ConvertToXelement();
 
             try
             {
-                _fileIO.Save(site, _id);
+                fileIO.Save(site, _id);
                 IsDirty = false;
             }
             catch (Exception ex)
             {
                 throw new ApplicationException("Error saving web site config: " + ex.Message);
             }
+        }
+
+        public void Delete(IFileIO fileIO)
+        {
+            var site = ConvertToXelement();
+
+            try
+            {
+                fileIO.Delete(site, _id);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Error saving web site config: " + ex.Message);
+            }
+        }
+
+        private XElement ConvertToXelement()
+        {
+            return new XElement("site", new XAttribute("name", _name), new XAttribute("id", _id), new XAttribute("serverAutoStart", _serverAutoStart),
+                new XElement("application", new XAttribute("path", _applicationPath),
+                    new XElement("virtualDirectory", new XAttribute("path", _virtualPath), new XAttribute("physicalPath", _physicalPath))),
+                new XElement("bindings",
+                    new XElement("binding", new XAttribute("protocol", _protocol), new XAttribute("bindingInformation", _bindingInformation))
+                    ));
         }
     }
 }
