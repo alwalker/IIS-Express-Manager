@@ -78,7 +78,15 @@ namespace IISExpressManager
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             var currentSite = lstSites.SelectedItem as WebSite;
-            currentSite.IsDirty = false;
+
+            try
+            {
+                currentSite.Save(_fileIO);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(String.Format("Error saving site: {0}", ex), "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

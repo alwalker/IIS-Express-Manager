@@ -1,0 +1,8 @@
+<site name="WebSite1" id="1" serverAutoStart="true">
+  <application path="/">
+    <virtualDirectory path="/" physicalPath="test test" />
+  </application>
+  <bindings>
+    <binding protocol="http" bindingInformation=":8080:localhost" />
+  </bindings>
+</site>

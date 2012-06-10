@@ -11,6 +11,7 @@ namespace IISExpressManager
 {
     public class WebSite : INotifyPropertyChanged
     {
+        public enum BindingProtocol { Unknown = 0, http, ftp };
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged(string name)
         {
@@ -24,8 +25,6 @@ namespace IISExpressManager
                 handler(this, new PropertyChangedEventArgs(name));
             }
         }
-
-        public enum BindingProtocol { Unknown = 0, http, ftp };
 
         private readonly int _id;
         private bool _isDirty;
@@ -146,7 +145,7 @@ namespace IISExpressManager
                 }
             }
         }
-        public string PhysicalPath //TODO:Check if exists
+        public string PhysicalPath
         {
             get
             {
@@ -256,6 +255,26 @@ namespace IISExpressManager
             {
                 throw new ApplicationException(
                     String.Format("Error parsing applicationhost config file: {0}", ex.Message));
+            }
+        }
+
+        public void Save(IFileIO _fileIO)
+        {
+            var site = new XElement("site", new XAttribute("name", _name), new XAttribute("id", _id), new XAttribute("serverAutoStart", _serverAutoStart),
+                new XElement("application", new XAttribute("path", _applicationPath),
+                    new XElement("virtualDirectory", new XAttribute("path", _virtualPath), new XAttribute("physicalPath", _physicalPath))),
+                new XElement("bindings",
+                    new XElement("binding", new XAttribute("protocol", _protocol), new XAttribute("bindingInformation", _bindingInformation))
+                    ));
+
+            try
+            {
+                _fileIO.Save(site, _id);
+                IsDirty = false;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Error saving web site config: " + ex.Message);
             }
         }
     }

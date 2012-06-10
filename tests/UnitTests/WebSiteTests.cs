@@ -69,5 +69,42 @@ namespace UnitTests
 
             Assert.Empty(sites);
         }
+
+        [Fact]
+        public void TestSave()
+        {
+            var newSite = XDocument.Load("New_Site.xml").Element("site");
+            _fileIOMock.Setup(x => x.GetSitesSection()).Returns(_validSites);
+            _fileIOMock.Setup(x => x.Exists(It.IsAny<string>())).Returns(true);
+            _fileIOMock.Setup(x => x.Save(It.Is<XElement>(y => CompareElements(y, newSite)), It.IsAny<int>())).Verifiable();
+            var site = WebSite.GetAllWebsites(_fileIOMock.Object)[0];
+
+            site.PhysicalPath = "test test";
+            site.Save(_fileIOMock.Object);
+
+            Assert.False(site.IsDirty);
+            _fileIOMock.VerifyAll();
+        }
+
+        private bool CompareElements(XElement left, XElement right)
+        {
+            var lnodes = left.Nodes().ToList();
+            var rnodes = right.Nodes().ToList();
+
+            if (lnodes.Count != rnodes.Count)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < lnodes.Count; i++)
+            {
+                if(!XElement.DeepEquals(lnodes[i], rnodes[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }
 }

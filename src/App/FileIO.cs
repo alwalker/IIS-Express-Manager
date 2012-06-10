@@ -55,6 +55,35 @@ namespace IISExpressManager
             }
         }
 
+        public void Save(XElement site, int id)
+        {
+            _watcher.EnableRaisingEvents = false;
 
+            try
+            {
+                XDocument config = null;
+                using (var stream = new FileStream(_pathToConfig, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite))
+                {
+                    config = XDocument.Load(stream);
+                }
+
+                (from s in config.Descendants("site")
+                 where s.Attribute("id").Value == id.ToString()
+                 select s).SingleOrDefault().Remove();
+
+                config.Descendants("sites").SingleOrDefault().Add(site);
+
+                config.Save(_pathToConfig);
+
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                _watcher.EnableRaisingEvents = true;
+            }
+        }
     }
 }

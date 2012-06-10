@@ -43,5 +43,20 @@ namespace IntegrationTests
 
             Assert.False(fileIO.Exists("C:\\this_dir_no_exist"));
         }
+
+        [Fact]
+        public void TestSave()
+        {
+            var fileIO = new FileIO("applicationhost_saved.config");
+            var newSite = XDocument.Load("New_Site.xml").Element("site");
+
+            fileIO.Save(newSite, 1);
+
+            var savedSite =
+                (from s in XDocument.Load("applicationhost_saved.config").Descendants("site")
+                 where s.Attribute("id").Value == "1"
+                 select s).SingleOrDefault();
+            Assert.Equal("false", savedSite.Attribute("serverAutoStart").Value);
+        }
     }
 }
