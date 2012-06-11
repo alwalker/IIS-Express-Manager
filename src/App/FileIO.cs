@@ -16,12 +16,19 @@ namespace IISExpressManager
 
         public FileIO(string pathToConfig)
         {
-            _pathToConfig = pathToConfig;
+            try
+            {
+                _pathToConfig = pathToConfig;
 
-            _watcher.Path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"IISExpress\config");
-            _watcher.Changed += Watcher_FileChanged;
-            _watcher.Filter = "applicationhost.config";
-            _watcher.EnableRaisingEvents = true;
+                _watcher.Path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"IISExpress\config");
+                _watcher.Changed += Watcher_FileChanged;
+                _watcher.Filter = "applicationhost.config";
+                _watcher.EnableRaisingEvents = true;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Error setting up file monitoring: " + ex.Message);
+            }
         }
 
         private void Watcher_FileChanged(object sender, FileSystemEventArgs e)

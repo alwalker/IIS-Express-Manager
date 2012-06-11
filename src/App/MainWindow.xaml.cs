@@ -28,10 +28,18 @@ namespace IISExpressManager
         {
             InitializeComponent();
 
-            _fileIO = new FileIO(Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                @"IISExpress\config\applicationhost.config"));
-            _fileIO.FileChanged += FileChanged;
+            try
+            {
+                _fileIO = new FileIO(Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                    @"IISExpress\config\applicationhost.config"));
+                _fileIO.FileChanged += FileChanged;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                Application.Current.Shutdown();
+            }
         }
 
         private void FileChanged(object sender, EventArgs e)
