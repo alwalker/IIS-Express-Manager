@@ -287,6 +287,24 @@ namespace IISExpressManager
             }
         }
 
+        public static WebSite Create(IFileIO fileIO, int id, string name, bool serverAutoStart, string applicationPath,
+            string applicationPool, string virtualPath, string physicalPath, BindingProtocol protocol, string bindingInfo)
+        {
+            var dirIsValid = false;
+            try
+            {
+                dirIsValid = fileIO.Exists(physicalPath);
+                var newSite = new WebSite(id, name, serverAutoStart, applicationPath, applicationPool, virtualPath,
+                    physicalPath, protocol, bindingInfo, dirIsValid);
+                newSite.Save(fileIO);
+                return newSite;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException(string.Format("Error creating new website: {0}", ex));
+            }
+        }
+
         private XElement ConvertToXelement()
         {
             return new XElement("site", new XAttribute("name", _name), new XAttribute("id", _id), new XAttribute("serverAutoStart", _serverAutoStart),

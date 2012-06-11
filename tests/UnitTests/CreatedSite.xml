@@ -1,0 +1,8 @@
+<site name="Test Add" id="27" serverAutoStart="false">
+  <application path="/">
+    <virtualDirectory path="/" physicalPath="c:\Users" />
+  </application>
+  <bindings>
+    <binding protocol="ftp" bindingInformation=":8080" />
+  </bindings>
+</site>

@@ -101,6 +101,38 @@ namespace UnitTests
             _fileIOMock.VerifyAll();
         }
 
+        [Fact]
+        public void TestCreateNewWebsite()
+        {
+            var id = 27;
+            var name = "Test Add";
+            var serverAutoStart = false;
+            var applicationPath = "/";
+            var applicationPool = "test";
+            var virtualPath = "/";
+            var physicalPath = @"c:\Users";
+            var protocol = WebSite.BindingProtocol.ftp;
+            var bindingInformation = ":8080";
+            var newSiteXML = XDocument.Load("CreatedSite.xml").Element("site");
+            _fileIOMock.Setup(x => x.Exists(It.IsAny<string>())).Returns(true);
+            _fileIOMock.Setup(x => x.Save(It.Is<XElement>(y => CompareElements(y, newSiteXML)), It.IsAny<int>())).Verifiable();
+
+            var newSite = WebSite.Create(_fileIOMock.Object, id, name, serverAutoStart, applicationPath,applicationPool,
+                virtualPath, physicalPath,protocol, bindingInformation);
+
+            _fileIOMock.VerifyAll();
+            Assert.Equal(id, newSite.Id);
+            Assert.Equal(name, newSite.Name);
+            Assert.Equal(serverAutoStart, newSite.ServerAutoStart);
+            Assert.Equal(applicationPool, newSite.ApplicationPool);
+            Assert.Equal(applicationPath, newSite.ApplicationPath);
+            Assert.Equal(virtualPath, newSite.VirtualPath);
+            Assert.Equal(physicalPath, newSite.PhysicalPath);
+            Assert.Equal(protocol, newSite.Protocol);
+            Assert.Equal(bindingInformation, newSite.BindingInformation);
+            Assert.True(newSite.PhysicalDirectoryIsValid);
+        }
+
         private bool CompareElements(XElement left, XElement right)
         {
             var lnodes = left.Nodes().ToList();
@@ -113,7 +145,7 @@ namespace UnitTests
 
             for (int i = 0; i < lnodes.Count; i++)
             {
-                if(!XElement.DeepEquals(lnodes[i], rnodes[i]))
+                if (!XElement.DeepEquals(lnodes[i], rnodes[i]))
                 {
                     return false;
                 }

@@ -73,6 +73,7 @@ namespace IISExpressManager
             btnSave.DataContext = currentSite;
             grpApplication.DataContext = currentSite;
             grpBinding.DataContext = currentSite;
+            txtName.Focus();
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
@@ -83,7 +84,7 @@ namespace IISExpressManager
             {
                 currentSite.Save(_fileIO);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(String.Format("Error saving site: {0}", ex), "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -104,6 +105,22 @@ namespace IISExpressManager
             }
 
             _webSites.Remove(currentSite);
+        }
+
+        private void btnCreate_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var newId = _webSites.Select(x => x.Id).Max() + 1;
+                var newSite = WebSite.Create(_fileIO, newId, "New Site", true, "/", "Clr4IntegratedAppPool", "/", 
+                    @"C:\", WebSite.BindingProtocol.http, ":8080");
+                _webSites.Add(newSite);
+                lstSites.SelectedIndex = lstSites.Items.Count - 1;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+            }            
         }
     }
 }

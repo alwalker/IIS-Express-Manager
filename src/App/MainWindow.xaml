@@ -18,12 +18,13 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <ListBox Name="lstSites" Grid.Row="0" Grid.ColumnSpan="2" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,5" Padding="0,0,5,0" SelectionChanged="lstSites_SelectionChanged">
+                <ListBox Name="lstSites" Grid.Row="0" Grid.ColumnSpan="3" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,5" Padding="0,0,5,0" SelectionChanged="lstSites_SelectionChanged">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Label Name="lblItem" Content="{Binding Path=DisplayName}" Background="{Binding PhysicalDirectoryIsValid, Converter={StaticResource converter}}" />
@@ -42,6 +43,7 @@
                         </Style>
                     </Button.Style>
                 </Button>
+                <Button Name="btnCreate" Grid.Row="1" Grid.Column="2" Content="Create" Click="btnCreate_Click" />
             </Grid>
         </GroupBox>
         <GroupBox Name="grpDetails" Header="Details" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="2,0,5,2">

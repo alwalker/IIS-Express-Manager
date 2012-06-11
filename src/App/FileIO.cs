@@ -55,7 +55,7 @@ namespace IISExpressManager
             }
         }
 
-        public void Save(XElement site, int id)
+        public void Save(XElement newSite, int id)
         {
             _watcher.EnableRaisingEvents = false;
 
@@ -67,11 +67,16 @@ namespace IISExpressManager
                     config = XDocument.Load(stream);
                 }
 
-                (from s in config.Descendants("site")
-                 where s.Attribute("id").Value == id.ToString()
-                 select s).SingleOrDefault().Remove();
+                var site = (from s in config.Descendants("site")
+                            where s.Attribute("id").Value == id.ToString()
+                            select s).SingleOrDefault();
 
-                config.Descendants("sites").SingleOrDefault().Add(site);
+                if (site != null)
+                {
+                    site.Remove();
+                }
+
+                config.Descendants("sites").SingleOrDefault().Add(newSite);
 
                 config.Save(_pathToConfig);
 
