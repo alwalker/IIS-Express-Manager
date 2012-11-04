@@ -84,7 +84,7 @@ namespace IISExpressManager
                 }
             }
         }
-        public string DisplayName { get { return "(" + _id + ") " + _name; } }
+        public string DisplayName { get { return String.Format("({0}) {1}", _id, _name); } }
         public bool ServerAutoStart
         {
             get
@@ -287,8 +287,9 @@ namespace IISExpressManager
             }
         }
 
-        public static WebSite Create(IFileIO fileIO, int id, string name, bool serverAutoStart, string applicationPath,
-            string applicationPool, string virtualPath, string physicalPath, BindingProtocol protocol, string bindingInfo)
+        public static WebSite Create(IFileIO fileIO, int id, string name, bool serverAutoStart,
+            string applicationPath, string applicationPool, string virtualPath, string physicalPath,
+            BindingProtocol protocol, string bindingInfo)
         {
             var dirIsValid = false;
             try

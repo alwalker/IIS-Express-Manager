@@ -18,6 +18,12 @@ namespace IntegrationTests
         }
 
         [Fact]
+        public void ConstructorThrowsOnNonExistingConfigFile()
+        {
+            Assert.Throws(typeof(ApplicationException), () => new FileIO("ThisDoesNotExist.foo"));
+        }
+
+        [Fact]
         public void TestGetSitesSection()
         {
             var expected = XDocument.Load("LongValidSites.xml").Descendants("sites");
@@ -38,7 +44,7 @@ namespace IntegrationTests
         [Fact]
         public void TestExists_DoesExist()
         {
-            var fileIO = new FileIO(string.Empty);
+            var fileIO = new FileIO("applicationhost.config");
 
             Assert.True(fileIO.Exists("C:\\"));
         }
@@ -46,7 +52,7 @@ namespace IntegrationTests
         [Fact]
         public void TestExists_DoesNotExist()
         {
-            var fileIO = new FileIO(string.Empty);
+            var fileIO = new FileIO("applicationhost.config");
 
             Assert.False(fileIO.Exists("C:\\this_dir_no_exist"));
         }
@@ -64,6 +70,21 @@ namespace IntegrationTests
                  where s.Attribute("id").Value == "1"
                  select s).SingleOrDefault();
             Assert.Equal("false", savedSite.Attribute("serverAutoStart").Value);
+        }
+
+        [Fact]
+        public void TestSaveNewSite()
+        {
+            var fileIO = new FileIO("applicationhost_saved.config");
+            var newSite = XDocument.Load("New_Site_Doesnt_Exist.xml").Element("site");
+
+            fileIO.Save(newSite, 1);
+
+            var savedSite =
+                (from s in XDocument.Load("applicationhost_saved.config").Descendants("site")
+                 where s.Attribute("id").Value == "122"
+                 select s).SingleOrDefault();
+            Assert.NotNull(savedSite);
         }
 
         [Fact]

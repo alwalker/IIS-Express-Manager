@@ -18,11 +18,21 @@ namespace IISExpressManager
         {
             try
             {
-                _pathToConfig = pathToConfig;
+                if (!File.Exists(pathToConfig))
+                {
+                    throw new ApplicationException("Config file not found!");
+                }
 
-                _watcher.Path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"IISExpress\config");
+                _pathToConfig = pathToConfig;
+                var splitPath = _pathToConfig.Split('\\');
+
+                _watcher.Path =
+                    splitPath.Length > 1 ?
+                    string.Join("\\", splitPath.Take(_pathToConfig.Split('\\').Length - 1))
+                    :
+                    Directory.GetCurrentDirectory();
                 _watcher.Changed += Watcher_FileChanged;
-                _watcher.Filter = "applicationhost.config";
+                _watcher.Filter = _pathToConfig.Split('\\').Last();
                 _watcher.EnableRaisingEvents = true;
             }
             catch (Exception ex)

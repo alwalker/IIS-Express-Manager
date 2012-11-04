@@ -30,7 +30,8 @@ namespace IISExpressManager
 
             try
             {
-                _fileIO = new FileIO(Path.Combine(
+                _fileIO = new FileIO(
+                    Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                     @"IISExpress\config\applicationhost.config"));
                 _fileIO.FileChanged += FileChanged;
